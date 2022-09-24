@@ -19,6 +19,18 @@ resource "aws_launch_configuration" "example" {
               EOF
 }
 
+resource "aws_autoscaling_group" "example" {
+  launch_configuration = aws_launch_configuration.example
+  min_size = 2
+  max_size = 10
+
+  tag {
+    key = "name"
+    name = "terraform-asg-example"
+    propagate_at_launch = true
+  }
+}
+
 output "public_ip" {
   value       = aws_instance.example.public_ip
   description = "The public IP address of the web server"
